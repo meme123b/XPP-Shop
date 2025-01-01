@@ -120,8 +120,6 @@ class Main:
         self.Market.geometry('800x600')
         self.Market.resizable(False, False)
 
-        
-
         testbutton = Button(self.Market, text = '购买小面包(2元/个)', command = lambda: self.BuyItem('小面包', testentry))
         testlabel = Label(self.Market, text = '买多少个?')
         testentry = Entry(self.Market)
