@@ -60,7 +60,9 @@ class Main:
         WorkLabel = Label(self.root, text = f'工作单位: {M.Work}', textvariable = self.WorkVAR, font = ('微软雅黑', 14))
 
         LogButton = Button(self.root, text = '日志', command = self.NC, font = ('微软雅黑', 14)) # 还未开放功能
+        OpenMarketButton = Button(self.root, text = '自己做生意!', command = self.NC, font = ('微软雅黑', 14)) # 还未开放功能
         RecruitmentMarketButton = Button(self.root, text = '招聘市场', command = self.RecruitmentMarket, font = ('微软雅黑', 14))
+        DoOddJobButton = Button(self.root, text = '打零工', command = self.DoOddJob, font = ('微软雅黑', 14))
         ShopButton = Button(self.root, text = '商店', command = self.GoToMarket, font = ('微软雅黑', 14))
 
         MoneyLabel.pack() # 钱数
@@ -68,11 +70,64 @@ class Main:
         Version.place(x = 660, y = 570) # 版本号
 
         ShopButton.pack() # 商店
+        DoOddJobButton.pack() # 打零工
         RecruitmentMarketButton.pack() # 招聘市场
         LogButton.pack() # 日志
 
+    def DoOddJob(self):
+        self.DojOptions = {"default": "no", "icon": "info"}
+        if M.Work != '无':
+            a = messagebox.askquestion('tips', '你已经有工作了!\n想被老板炒鱿鱼啊!', **self.DojOptions)
+            if a == 'no':
+                messagebox.showinfo('tips', '算你识相!')
+            else:
+                messagebox.showinfo('tips', '你被炒鱿鱼了!')
+                M.Work = '无'
+            return None
+        self.JOB = Tk()
+        self.JOB.title('打零工')
+        self.JOB.geometry('600x400')
+        self.JOB.resizable(False, False)
+        
+    def BuyItem(self, item, entry):
+        if item == '小面包':
+            BUY = 2
+            try:
+                num = int(entry.get())
+            except:
+                messagebox.showinfo('tips', '请输入一个整数!')
+                return None
+            else:
+                num = int(entry.get())
+                if num > 0:
+                    question = messagebox.askquestion('购买', f'你确定要购买{num}个{item}吗?\n一共需要{num * BUY}元')
+                    if question == 'yes':
+                        if M.Money >= num * BUY:
+                            M.Money -= num * BUY
+                            messagebox.showinfo('tips', f'购买成功!你那清纯的背包被你塞下了{num}个{item}!')
+                        else:
+                            messagebox.showinfo('tips', '钱不够awa!')
+                    else:
+                        messagebox.showinfo('tips', '已放弃支付!')
+                        return None
+                else:
+                    messagebox.showinfo('tips', '请输入一个大于0的正整数!')
+                    return None
+
     def GoToMarket(self):
-        self.NC()
+        self.Market = Tk()
+        self.Market.title('商店')
+        self.Market.geometry('800x600')
+        self.Market.resizable(False, False)
+
+        
+
+        testbutton = Button(self.Market, text = '购买小面包(2元/个)', command = lambda: self.BuyItem('小面包', testentry))
+        testlabel = Label(self.Market, text = '买多少个?')
+        testentry = Entry(self.Market)
+        testbutton.pack()
+        testlabel.pack()
+        testentry.pack()
 
     def RecruitmentMarket(self):
         self.RM = Tk()
