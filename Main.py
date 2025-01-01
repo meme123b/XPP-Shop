@@ -75,11 +75,10 @@ class Main:
         self.NC()
 
     def RecruitmentMarket(self):
-
         self.RM = Tk()
         self.RM.title('招聘市场')
         self.RM.geometry('800x600')
-        self.RM.resizable(False, False)        
+        self.RM.resizable(False, False)
 
     def Log(self):
         self.log = Tk()
