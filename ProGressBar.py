@@ -22,10 +22,10 @@ class ProGressBar():
     def update_progress(self, step):
         if step < 101:
             self.progressbar['value'] = step
-            self.PB.after(50, self.update_progress, step + 1)  # 递归调用更新进度条
+            self.PB.after(50, self.update_progress, step + 1)
         else:
             self.PROGRESSCOMPLETEVAR.set('--完成--')
-            self.PB.after(1000, self.PB.destroy)  # 等待1秒后关闭窗口
+            self.PB.after(1000, self.PB.destroy)
             self.GOBACKHOME = 'OK'
 
     def on_closing(self):
