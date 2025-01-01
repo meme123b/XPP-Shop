@@ -79,9 +79,7 @@ class Main:
         self.RM = Tk()
         self.RM.title('招聘市场')
         self.RM.geometry('800x600')
-        self.RM.resizable(False, False)
-
-        self.PAGE_COMPANY_AND_DOLLAR
+        self.RM.resizable(False, False)        
 
     def Log(self):
         self.log = Tk()
