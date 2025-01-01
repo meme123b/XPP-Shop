@@ -26,7 +26,6 @@ CompanyNumber = []
 
 
 comapany_Dict = dict(zip(company_names, comapany_dollar))
-# print(comapany_Dict)
 for i in range(len(company_names)):
     CompanyNumber.append(i)
 
