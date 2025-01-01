@@ -97,22 +97,21 @@ class Main:
             except:
                 messagebox.showinfo('tips', '请输入一个整数!')
                 return None
-            else:
-                num = int(entry.get())
-                if num > 0:
-                    question = messagebox.askquestion('购买', f'你确定要购买{num}个{item}吗?\n一共需要{num * BUY}元')
-                    if question == 'yes':
-                        if M.Money >= num * BUY:
-                            M.Money -= num * BUY
-                            messagebox.showinfo('tips', f'购买成功!你那清纯的背包被你塞下了{num}个{item}!')
-                        else:
-                            messagebox.showinfo('tips', '钱不够awa!')
-                    else:
-                        messagebox.showinfo('tips', '已放弃支付!')
-                        return None
+        num = int(entry.get())
+        if num > 0:
+            question = messagebox.askquestion('购买', f'你确定要购买{num}个{item}吗?\n一共需要{num * BUY}元')
+            if question == 'yes':
+                if M.Money >= num * BUY:
+                    M.Money -= num * BUY
+                    messagebox.showinfo('tips', f'购买成功!你那清纯的背包被你塞下了{num}个{item}!')
                 else:
-                    messagebox.showinfo('tips', '请输入一个大于0的正整数!')
-                    return None
+                    messagebox.showinfo('tips', '钱不够awa!')
+            else:
+                messagebox.showinfo('tips', '已放弃支付!')
+                return None
+        else:
+            messagebox.showinfo('tips', '请输入一个大于0的正整数!')
+            return None
 
     def GoToMarket(self):
         self.Market = Tk()
