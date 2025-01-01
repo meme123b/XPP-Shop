@@ -20,3 +20,5 @@
 
 - 邮箱：13705894451@163.com
 - GitHub：https://github.com/meme123b/XPP-Shop
+
+###千万别嫌中二!第一次做!
