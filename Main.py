@@ -80,10 +80,11 @@ class Main:
             a = messagebox.askquestion('tips', '你已经有工作了!\n想被老板炒鱿鱼啊!', **self.DojOptions)
             if a == 'no':
                 messagebox.showinfo('tips', '算你识相!')
+                return None
             else:
                 messagebox.showinfo('tips', '你被炒鱿鱼了!')
                 M.Work = '无'
-            return None
+
         self.JOB = Tk()
         self.JOB.title('打零工')
         self.JOB.geometry('600x400')
@@ -119,14 +120,26 @@ class Main:
         self.Market.geometry('800x600')
         self.Market.resizable(False, False)
 
+        Label(self.Market, text = '食品', font = ('微软雅黑', 20)).place(x = 50, y = 15)
+        Label(self.Market, text = '小面包', font = ('微软雅黑', 13)).place(x = 53, y = 70)
         testbutton = Button(self.Market, text = '购买小面包(2元/个)', command = lambda: self.BuyItem('小面包', testentry))
         testlabel = Label(self.Market, text = '买多少个?')
         testentry = Entry(self.Market)
-        testbutton.pack()
-        testlabel.pack()
-        testentry.pack()
+        testbutton.place(x = 30, y = 100)
+        testlabel.place(x = 54, y = 130)
+        testentry.place(x = 20, y = 150)
 
     def RecruitmentMarket(self):
+        self.DojOptions = {"default": "no", "icon": "info"}
+        if M.Work != '无':
+            a = messagebox.askquestion('tips', '你已经有工作了!\n想被老板炒鱿鱼啊!', **self.DojOptions)
+            if a == 'no':
+                messagebox.showinfo('tips', '算你识相!')
+                return None
+            else:
+                messagebox.showinfo('tips', '你被炒鱿鱼了!')
+                M.Work = '无'
+
         self.RM = Tk()
         self.RM.title('招聘市场')
         self.RM.geometry('800x600')
