@@ -12,9 +12,6 @@ import os
 
 messagebox.showwarning('注意', '本游戏内所有公司名均为虚构!\n如有雷同 纯属巧合!')
 
-now = datetime.now()
-
-
 def SelfCheck():
     system_name = P.system()
     if not system_name == 'Windows':
