@@ -26,7 +26,7 @@ def CheckTheTableOfContents():
     if not os.path.exists(path):
         # 文件不存在，创建并写入内容
         with open(path, 'w') as f:
-            f.write(f"{Windows_user_name}\nNone\n0")
+            f.write(f"{Windows_user_name}\nNone\n100")
             f.close()
 
 def Draw_Text(Text = '', SleepTime = 0, endl = False) -> None:
