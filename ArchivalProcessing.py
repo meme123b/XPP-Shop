@@ -12,7 +12,7 @@ LogPath = ''
 for i in range(len(__file__) - 21):
     LogPath += __file__[i] #ProGram File: ArchivalProcessing.py
 
-path = 'C:/Users/Administrator/AppData/LocalLow/WuBinBangStudioGame/Archive.sav'
+path = 'C:/Users/Administrator/AppData/LocalLow/XPPGame/Archive.sav'
 
 def CheckTheTableOfContents():
     global path, Windows_user_name
