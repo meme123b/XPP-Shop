@@ -51,11 +51,6 @@ def ReadArchives():
     else:
         M.Work = List[1]
     M.Money = int(List[2])
-    #Draw_Text('加载中', 0.1)
-    #Draw_Text('......', 0.15)
-    #print()
-    #Draw_Text(f'欢迎回来!{M.UserName}', 0.05)
-    #sleep(0.5)
     messagebox.showinfo('提示', f'存档加载完成!\n\n欢迎回来!{M.UserName}')
     return List
 
