@@ -9,6 +9,8 @@ from datetime import datetime
 from Page import *
 from COMAPANY import random_keys
 import os
+from ProGressBar import ProGressBar
+import threading
 
 messagebox.showwarning('注意', '本游戏内所有公司名均为虚构!\n如有雷同 纯属巧合!')
 
@@ -52,15 +54,16 @@ class Main:
         self.root.after(10, self.AllLabelUpdate)
 
     def MainInterface(self):
-        Version = Label(self.root, text = 'Versions: BETA.1.0', font = ('微软雅黑', 11))
+        Version = Label(self.root, text = 'Versions: BETA.1.1', font = ('微软雅黑', 11))
         MoneyLabel = Label(self.root, text = f'你的钱: {M.Money}元', textvariable = self.MoneyVAR, font = ('微软雅黑', 14))
         WorkLabel = Label(self.root, text = f'工作单位: {M.Work}', textvariable = self.WorkVAR, font = ('微软雅黑', 14))
 
-        LogButton = Button(self.root, text = '日志', command = self.NC, font = ('微软雅黑', 14)) # 还未开放功能
-        OpenMarketButton = Button(self.root, text = '自己做生意!', command = self.NC, font = ('微软雅黑', 14)) # 还未开放功能
+        LogButton = Button(self.root, text = '日志', command = self.Log, font = ('微软雅黑', 14))
+        OpenMarketButton = Button(self.root, text = '自己开公司!', command = self.NC, font = ('微软雅黑', 14)) # 还未开放功能
         RecruitmentMarketButton = Button(self.root, text = '招聘市场', command = self.RecruitmentMarket, font = ('微软雅黑', 14))
         DoOddJobButton = Button(self.root, text = '打零工', command = self.DoOddJob, font = ('微软雅黑', 14))
         ShopButton = Button(self.root, text = '商店', command = self.GoToMarket, font = ('微软雅黑', 14))
+        SMButton = Button(self.root, text = '说明', command = self.SM, font = ('微软雅黑', 14))
 
         MoneyLabel.pack() # 钱数
         WorkLabel.pack() # 工作单位
@@ -70,6 +73,7 @@ class Main:
         DoOddJobButton.pack() # 打零工
         RecruitmentMarketButton.pack() # 招聘市场
         LogButton.pack() # 日志
+        SMButton.pack() # 说明
 
     def DoOddJob(self):
         self.DojOptions = {"default": "no", "icon": "info"}
@@ -87,6 +91,27 @@ class Main:
         self.JOB.geometry('600x400')
         self.JOB.resizable(False, False)
         
+        Label(self.JOB, text = '选择一个工作').pack()
+        Button(self.JOB, text = '送外卖(10元/8秒)', command = lambda : self.AddOfOddJob('送外卖')).pack()
+        Button(self.JOB, text = '快递驿站分拣(20元/16秒)', command = lambda : self.AddOfOddJob('快递驿站分拣')).pack()
+        Button(self.JOB, text = '送快递(30元/24秒)', command = lambda : self.AddOfOddJob('送快递')).pack()
+        
+    def AddOfOddJob(self, job):
+        def job_thread():
+            job_Seconds = {
+            '送外卖' : 8,
+            '快递驿站分拣' : 16,
+            '送快递' : 24,
+            }
+            duration = job_Seconds.get(job)  # 默认为8秒，如果没有找到对应的工作类型
+            ProGress = ProGressBar(duration)
+            ProGress.Run()
+            if job == '送外卖': M.Money += 10
+            elif job == '快递驿站分拣': M.Money += 20
+            elif job == '送快递': M.Money += 30
+
+        threading.Thread(target=job_thread).start()
+
     def BuyItem(self, item, entry):
         if item == '小面包':
             BUY = 2
@@ -142,14 +167,35 @@ class Main:
         self.RM.geometry('800x600')
         self.RM.resizable(False, False)
 
+    def SM(self):
+        self.sm = Tk()
+        self.sm.title('说明')
+        self.sm.resizable(False, False)
+        Label(self.sm, text = 'XPP Shop', font = ('微软雅黑', 20)).pack()
+        Label(self.sm, text = '这是一个打工赚钱小游戏', font = ('微软雅黑', 10)).pack()
+        Label(self.sm, text = '如果对本游戏觉得还不错的话, 请给我一个star吧! 真的感谢!').pack()
+        Label(self.sm, text = 'https://github.com/meme123b/XPP-Shop', font = ('微软雅黑', 10)).pack()
+        Label(self.sm, text = '制作者——WuBinBang').pack()
+
     def Log(self):
         self.log = Tk()
         self.log.title('日志')
         self.log.geometry('600x400')
         self.log.resizable(False, False)
 
-        LogText = Label(self.log, text = '---日志信息---', font = ('微软雅黑', 13))
-        LogText.pack()
+        TitleText = Label(self.log, text = '---日志信息---', font = ('微软雅黑', 17))
+        
+        BETA1_0 = Label(self.log, text = 'BETA1.0: 基本框架完成 开始制作游戏玩法', font = ('微软雅黑', 10))
+        BETA1_1 = Label(self.log, text = 'BETA1.1: 打零工更新 加入"说明"按钮', font = ('微软雅黑', 10))
+        FuturePlans = Label(self.log, text = '\n\n---未来的计划---', font = ('微软雅黑', 17))
+        FuturePlans2 = Label(self.log, text = '\n注:未来的计划不一定是最终的 也可能被取消!')
+
+        TitleText.pack()
+        BETA1_0.pack()
+        BETA1_1.pack()
+        
+        FuturePlans.pack()
+        FuturePlans2.pack()
 
         self.log.mainloop()
 
