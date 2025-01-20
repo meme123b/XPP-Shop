@@ -52,7 +52,10 @@ def ReadArchives():
     else:
         M.Work = List[1]
     M.Money = int(List[2])
-    M.LastSignInDate = List[3]
+    try:
+        M.LastSignInDate = List[3]
+    except:
+        M.LastSignInDate = datetime.now().date()
     messagebox.showinfo('提示', f'存档加载完成!\n\n欢迎回来!{M.UserName}')
     return List
 
