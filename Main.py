@@ -17,7 +17,7 @@ messagebox.showwarning('注意', '本游戏内所有公司名均为虚构!\n如�
 def SelfCheck():
     system_name = P.system()
     if not system_name == 'Windows':
-        messagebox.showerror('出错了!', '本程序仅支持Windows系统!\n')
+        messagebox.showerror('Oops!', '本程序仅支持Windows系统!\n')
         sys.exit()
     AP.CheckTheTableOfContents()
     AP.ReadArchives()
