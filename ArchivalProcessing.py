@@ -5,6 +5,7 @@ from time import sleep
 from tkinter import *
 from tkinter import messagebox
 import subprocess as s
+from datetime import datetime
 
 Windows_user_name = os.getlogin()
 
@@ -40,7 +41,7 @@ def Draw_Text(Text = '', SleepTime = 0, endl = False) -> None:
 def ReadArchives():
     global path
     List = []
-    with open(path, 'r') as f:
+    with open(path, 'r', encoding = 'utf-8') as f:
         for i in f.read().splitlines():
             List.append(i)
         f.close()
@@ -51,14 +52,15 @@ def ReadArchives():
     else:
         M.Work = List[1]
     M.Money = int(List[2])
+    M.LastSignInDate = List[3]
     messagebox.showinfo('提示', f'存档加载完成!\n\n欢迎回来!{M.UserName}')
     return List
 
 def SaveArchives():
     global path
-    with open(path, 'w') as f:
+    with open(path, 'w', encoding = 'utf-8') as f:
         f.truncate()
         if(M.Work == '无'):
             M.Work = 'None'
-        f.write(f"{M.UserName}\n{M.Work}\n{M.Money}")
+        f.write(f"{M.UserName}\n{M.Work}\n{M.Money}\n{M.LastSignInDate}")
         f.close()
