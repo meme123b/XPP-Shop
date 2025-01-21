@@ -158,7 +158,7 @@ class Main: # 主程序
             else:
                 messagebox.showinfo('tips', '你被炒鱿鱼了!')
                 M.Work = '无'
- 
+
         self.RM = Tk()
         self.RM.title('招聘市场')
         self.RM.geometry('800x600')
