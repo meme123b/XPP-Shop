@@ -4,6 +4,7 @@ import json
 import Model as M
 import os
 import sys
+import threading
 
 def download_and_extract(url, extract_to='.'):
     # 下载文件
@@ -39,7 +40,7 @@ def CheckUpdate():
             if latest_version != current_version:
                 if messagebox.askquestion('更新', f'发现新版本: {latest_version}\n 按下"确定"以下载并安装更新!\n注:游戏所在目录一定是要有写入权限的!也要保证有良好的网络环境!') == 'yes':
                     messagebox.showinfo('更新', '关闭此界面开始更新!\n你还可以继续玩你的游戏!\n注:下载完成后要自行删除旧版本文件!')
-                    update_application()
+                    threading.Thread(target=update_application).start()
                 else:
                     return None
             else:
