@@ -54,8 +54,10 @@ def ReadArchives():
     M.Money = int(List[2])
     try:
         M.LastSignInDate = List[3]
+        M.Version = List[4]
     except:
         M.LastSignInDate = datetime.now().date()
+        M.Version = 'v2.0b'
     messagebox.showinfo('提示', f'存档加载完成!\n\n欢迎回来!{M.UserName}')
     return List
 
