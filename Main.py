@@ -6,7 +6,6 @@ import sys
 import platform as P
 import time as t
 from Page import *
-from COMAPANY import random_keys
 import os
 from ProGressBar import ProGressBar
 import threading
