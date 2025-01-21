@@ -25,7 +25,7 @@ def SelfCheck(): # 自建系统要求
     AP.ReadArchives()
 
 SelfCheck() # 调用自建系统要求方法
-
+ 
 class Main: # 主程序
     def __init__(self): # 初始化
         self.PAGE_COMPANY_AND_DOLLAR = comapany_Dict
