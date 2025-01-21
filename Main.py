@@ -24,6 +24,8 @@ def SelfCheck(): # 自建系统要求
         sys.exit()
     AP.CheckTheTableOfContents()
     AP.ReadArchives()
+    ReallyVersion = 'v2.1b'
+    M.Version = 'v2.1b'
 
 SelfCheck() # 调用自建系统要求方法
 
@@ -189,8 +191,10 @@ class Main: # 主程序
         Label(self.sm, text = 'XPP Shop', font = ('微软雅黑', 20)).pack()
         Label(self.sm, text = '这是一个打工赚钱小游戏', font = ('微软雅黑', 10)).pack()
         Label(self.sm, text = '虽然这个游戏没有反作弊 但最好还是别用作弊道具 不然就不好玩了', font = ('微软雅黑', 10)).pack()
+        Label(self.sm, text = '')
         Label(self.sm, text = '如果对本游戏觉得还不错的话, 请给我一个star吧! 真的感谢!').pack()
         Label(self.sm, text = 'https://github.com/meme123b/XPP-Shop', font = ('微软雅黑', 10)).pack()
+        Label(self.sm, text = '如果发现更新错误或者是bug, 请在github上或者在我的邮箱(13705894451@163.com)上告诉我!你的支持是我最大的动力!').pack()
         Label(self.sm, text = '制作者——WuBinBang').pack()
 
     def Log(self): # 日志
@@ -204,7 +208,7 @@ class Main: # 主程序
         BETA1_0 = Label(self.log, text = 'BETA1.0: 基本框架完成 开始制作游戏玩法', font = ('微软雅黑', 12))
         BETA1_1 = Label(self.log, text = 'BETA1.1: 打零工更新 加入"说明"按钮', font = ('微软雅黑', 12))
         BETA2_0 = Label(self.log, text = 'BETA2.0: 1、优化代码  2、日志内部"未来的计划"项去除  3、招聘市场更新  4、签到功能更新  5、解决一些已知问题', font = ('微软雅黑', 12))
-        BETA2_1 = Label(self.log, text = 'BETA2.1: 1、优化代码  2、商店增加商品  3、加入背包功能  4、完成自动更新功能', font = ('微软雅黑', 12))
+        BETA2_1 = Label(self.log, text = 'BETA2.1: 1、优化代码  2、完成自动更新功能', font = ('微软雅黑', 12))
 
         TitleText.pack()
         BETA1_0.pack()
