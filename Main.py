@@ -60,7 +60,7 @@ class Main: # 主程序
         self.root.after(10, self.AllLabelUpdate)
 
     def MainInterface(self): # 主界面
-        Version = Label(self.root, text = 'Versions: BETA.2.1', font = ('微软雅黑', 11))
+        Version = Label(self.root, text = 'Versions: BETA.2.2', font = ('微软雅黑', 11))
         MoneyLabel = Label(self.root, text = f'你的钱: {M.Money}元', textvariable = self.MoneyVAR, font = ('微软雅黑', 14))
         WorkLabel = Label(self.root, text = f'工作单位: {M.Work}', textvariable = self.WorkVAR, font = ('微软雅黑', 14))
 
@@ -92,6 +92,8 @@ class Main: # 主程序
         Button(self.JOB, text = '送外卖(10元/8秒)', command = lambda : self.AddOfOddJob('送外卖'), font = ('微软雅黑', 14)).pack()
         Button(self.JOB, text = '快递驿站分拣(20元/16秒)', command = lambda : self.AddOfOddJob('快递驿站分拣'), font = ('微软雅黑', 14)).pack()
         Button(self.JOB, text = '送快递(30元/24秒)', command = lambda : self.AddOfOddJob('送快递'), font = ('微软雅黑', 14)).pack()
+        Button(self.JOB, text = '去XX奶茶店打工(30元/24秒)', command = lambda : self.AddOfOddJob('去XX奶茶店打工'), font = ('微软雅黑', 14)).pack()
+        Button(self.JOB, text = '做网站审核员(10元/8秒)', command = lambda : self.AddOfOddJob('做网站审核员'), font = ('微软雅黑', 14)).pack()
         
     def AddOfOddJob(self, job): # 打零工处理
         def job_thread():
@@ -99,6 +101,8 @@ class Main: # 主程序
                 '送外卖' : 8,
                 '快递驿站分拣' : 16,
                 '送快递' : 24,
+                '去XX奶茶店打工' : 24,
+                '做网站审核员' : 8
             }
             duration = job_Seconds.get(job, 8)  # 默认为8秒，如果没有找到对应的工作类型
             ProGress = ProGressBar(duration)
@@ -106,18 +110,21 @@ class Main: # 主程序
             if job == '送外卖': M.Money += 10
             elif job == '快递驿站分拣': M.Money += 20
             elif job == '送快递': M.Money += 30
+            elif job == '去XX奶茶店打工': M.Money += 30
+            elif job == '做网站审核员': M.Money += 10
             self.job_queue.put('job_done')
 
         threading.Thread(target=job_thread).start()
 
     def BuyItem(self, item, entry): # 购买物品处理
-        if item == '小面包':
+        if item == '小面包' or item == '水娃娃矿泉水':
             BUY = 2
             try:
                 num = int(entry.get())
             except:
                 messagebox.showinfo('tips', '请输入一个整数!')
                 return None
+        
         num = int(entry.get())
         if num > 0:
             question = messagebox.askquestion('购买', f'你确定要购买{num}个{item}吗?\n一共需要{num * BUY}元')
@@ -140,14 +147,26 @@ class Main: # 主程序
         self.Market.geometry('800x600')
         self.Market.resizable(False, False)
 
-        Label(self.Market, text = '食品', font = ('微软雅黑', 20)).place(x = 50, y = 15)
-        Label(self.Market, text = '小面包', font = ('微软雅黑', 13)).place(x = 53, y = 70)
-        testbutton = Button(self.Market, text = '购买小面包(2元/个)', command = lambda: self.BuyItem('小面包', testentry))
-        testlabel = Label(self.Market, text = '买多少个?')
-        testentry = Entry(self.Market)
-        testbutton.place(x = 30, y = 100)
-        testlabel.place(x = 54, y = 130)
-        testentry.place(x = 20, y = 150)
+        Label(self.Market, text = '食品', font = ('微软雅黑', 20)).place(x = 63, y = 15)
+
+        Label(self.Market, text = '小面包', font = ('微软雅黑', 13)).place(x = 66, y = 70)
+        BuyBreadbutton = Button(self.Market, text = '购买小面包(2元/个)', command = lambda: self.BuyItem('小面包', BuyBreadentry))
+        BuyBreadlabel = Label(self.Market, text = '买多少个?')
+        BuyBreadentry = Entry(self.Market)
+        BuyBreadbutton.place(x = 43, y = 100)
+        BuyBreadlabel.place(x = 67, y = 130)
+        BuyBreadentry.place(x = 33, y = 150)
+
+        Label(self.Market, text = '水娃娃矿泉水', font = ('微软雅黑', 13)).place(x = 50, y = 200)
+        BuyWaterbutton = Button(self.Market, text = '购买水娃娃矿泉水(2元/瓶)', command = lambda: self.BuyItem('水娃娃矿泉水', BuyWaterentry))
+        BuyWaterlabel = Label(self.Market, text = '买多少瓶?')
+        BuyWaterentry = Entry(self.Market)
+        BuyWaterbutton.place(x = 30, y = 230)
+        BuyWaterlabel.place(x = 69, y = 260)
+        BuyWaterentry.place(x = 33, y = 280)
+
+        Label(self.Market, text = 'Other', font = ('微软雅黑', 20)).place(x = 400, y = 15)
+        Label(self.Market, text = '还没想好!', font = ('微软雅黑', 13)).place(x = 403, y = 70)
 
     def RecruitmentMarket(self): # 招聘市场
         self.DojOptions = {"default": "no", "icon": "info"}
@@ -207,12 +226,14 @@ class Main: # 主程序
         BETA1_1 = Label(self.log, text = 'BETA1.1: 打零工更新 加入"说明"按钮', font = ('微软雅黑', 12))
         BETA2_0 = Label(self.log, text = 'BETA2.0: 1、优化代码  2、日志内部"未来的计划"项去除  3、招聘市场更新  4、签到功能更新  5、解决一些已知问题', font = ('微软雅黑', 12))
         BETA2_1 = Label(self.log, text = 'BETA2.1: 1、优化代码  2、完成自动更新功能', font = ('微软雅黑', 12))
+        BETA2_2 = Label(self.log, text = 'BETA2.2: 1、增加打零工内容  2、增加商店内商品数', font = ('微软雅黑', 12))
 
         TitleText.pack()
         BETA1_0.pack()
         BETA1_1.pack()
         BETA2_0.pack()
         BETA2_1.pack()
+        BETA2_2.pack()
 
         self.log.mainloop()
     
@@ -235,7 +256,7 @@ class Main: # 主程序
         self.MainInterface()
         self.AllLabelUpdate()
         self.check_sign_in()
-        CheckUpdate()
+        threading.Thread(target = CheckUpdate).start()
         self.root.mainloop()
 
 if __name__ == '__main__': # 运行
