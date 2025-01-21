@@ -58,12 +58,11 @@ class Main: # 主程序
         self.root.after(10, self.AllLabelUpdate)
 
     def MainInterface(self): # 主界面
-        Version = Label(self.root, text = 'Versions: BETA.1.1', font = ('微软雅黑', 11))
+        Version = Label(self.root, text = 'Versions: BETA.2.1', font = ('微软雅黑', 11))
         MoneyLabel = Label(self.root, text = f'你的钱: {M.Money}元', textvariable = self.MoneyVAR, font = ('微软雅黑', 14))
         WorkLabel = Label(self.root, text = f'工作单位: {M.Work}', textvariable = self.WorkVAR, font = ('微软雅黑', 14))
 
         LogButton = Button(self.root, text = '日志', command = self.Log, font = ('微软雅黑', 14))
-        OpenMarketButton = Button(self.root, text = '自己开公司!', command = self.NC, font = ('微软雅黑', 14)) # 还未开放功能
         RecruitmentMarketButton = Button(self.root, text = '招聘市场', command = self.RecruitmentMarket, font = ('微软雅黑', 14))
         DoOddJobButton = Button(self.root, text = '打零工', command = self.DoOddJob, font = ('微软雅黑', 14))
         ShopButton = Button(self.root, text = '商店', command = self.GoToMarket, font = ('微软雅黑', 14))
@@ -138,13 +137,23 @@ class Main: # 主程序
         self.Market.resizable(False, False)
 
         Label(self.Market, text = '食品', font = ('微软雅黑', 20)).place(x = 50, y = 15)
+
         Label(self.Market, text = '小面包', font = ('微软雅黑', 13)).place(x = 53, y = 70)
-        testbutton = Button(self.Market, text = '购买小面包(2元/个)', command = lambda: self.BuyItem('小面包', testentry))
-        testlabel = Label(self.Market, text = '买多少个?')
-        testentry = Entry(self.Market)
-        testbutton.place(x = 30, y = 100)
-        testlabel.place(x = 54, y = 130)
-        testentry.place(x = 20, y = 150)
+        BuyBreadbutton = Button(self.Market, text = '购买小面包(2元/个)', command = lambda: self.BuyItem('小面包', BuyBreadentry))
+        BuyBreadlabel = Label(self.Market, text = '买多少个?')
+        BuyBreadentry = Entry(self.Market)
+        BuyBreadbutton.place(x = 30, y = 100)
+        BuyBreadlabel.place(x = 54, y = 130)
+        BuyBreadentry.place(x = 20, y = 150)
+
+        Label(self.Market, text = '水', font = ('微软雅黑', 13)).place(x = 60, y = 200)
+        BuyWaterbutton = Button(self.Market, text = '购买水(2元/瓶)', command = lambda : self.BuyItem('水', BuyWaterentry))
+        BuyWaterlabel = Label(self.Market, text = '买多少瓶?')
+        BuyWaterentry = Entry(self.Market)
+        BuyWaterbutton.place(x = 30, y = 230)
+        BuyWaterlabel.place(x = 54, y = 260)
+        BuyWaterentry.place(x = 20, y = 280)
+
 
     def RecruitmentMarket(self): # 招聘市场
         self.DojOptions = {"default": "no", "icon": "info"}
