@@ -13,6 +13,7 @@ import threading
 import queue as q
 import random
 from datetime import datetime
+from CheckUpdateProgram import CheckUpdate
 
 messagebox.showwarning('注意', '本游戏内所有公司名均为虚构!\n如有雷同 纯属巧合!')
 
@@ -67,6 +68,7 @@ class Main: # 主程序
         DoOddJobButton = Button(self.root, text = '打零工', command = self.DoOddJob, font = ('微软雅黑', 14))
         ShopButton = Button(self.root, text = '商店', command = self.GoToMarket, font = ('微软雅黑', 14))
         SMButton = Button(self.root, text = '说明', command = self.SM, font = ('微软雅黑', 14))
+        CheckUpdateButton = Button(self.root, text = '检查可用更新', command = CheckUpdate, font = ('微软雅黑', 14))
 
         MoneyLabel.pack() # 钱数
         WorkLabel.pack() # 工作单位
@@ -77,6 +79,7 @@ class Main: # 主程序
         RecruitmentMarketButton.pack() # 招聘市场
         LogButton.pack() # 日志
         SMButton.pack() # 说明
+        CheckUpdateButton.pack() # 检查更新
 
     def DoOddJob(self): # 打零工
         self.JOB = Tk()
@@ -137,23 +140,13 @@ class Main: # 主程序
         self.Market.resizable(False, False)
 
         Label(self.Market, text = '食品', font = ('微软雅黑', 20)).place(x = 50, y = 15)
-
         Label(self.Market, text = '小面包', font = ('微软雅黑', 13)).place(x = 53, y = 70)
-        BuyBreadbutton = Button(self.Market, text = '购买小面包(2元/个)', command = lambda: self.BuyItem('小面包', BuyBreadentry))
-        BuyBreadlabel = Label(self.Market, text = '买多少个?')
-        BuyBreadentry = Entry(self.Market)
-        BuyBreadbutton.place(x = 30, y = 100)
-        BuyBreadlabel.place(x = 54, y = 130)
-        BuyBreadentry.place(x = 20, y = 150)
-
-        Label(self.Market, text = '水', font = ('微软雅黑', 13)).place(x = 60, y = 200)
-        BuyWaterbutton = Button(self.Market, text = '购买水(2元/瓶)', command = lambda : self.BuyItem('水', BuyWaterentry))
-        BuyWaterlabel = Label(self.Market, text = '买多少瓶?')
-        BuyWaterentry = Entry(self.Market)
-        BuyWaterbutton.place(x = 30, y = 230)
-        BuyWaterlabel.place(x = 54, y = 260)
-        BuyWaterentry.place(x = 20, y = 280)
-
+        testbutton = Button(self.Market, text = '购买小面包(2元/个)', command = lambda: self.BuyItem('小面包', testentry))
+        testlabel = Label(self.Market, text = '买多少个?')
+        testentry = Entry(self.Market)
+        testbutton.place(x = 30, y = 100)
+        testlabel.place(x = 54, y = 130)
+        testentry.place(x = 20, y = 150)
 
     def RecruitmentMarket(self): # 招聘市场
         self.DojOptions = {"default": "no", "icon": "info"}
@@ -210,12 +203,14 @@ class Main: # 主程序
         
         BETA1_0 = Label(self.log, text = 'BETA1.0: 基本框架完成 开始制作游戏玩法', font = ('微软雅黑', 12))
         BETA1_1 = Label(self.log, text = 'BETA1.1: 打零工更新 加入"说明"按钮', font = ('微软雅黑', 12))
-        BETA1_2 = Label(self.log, text = 'BETA2.0: 1、优化代码  2、日志内部"未来的计划"项去除  3、招聘市场更新  4、签到功能更新  5、解决一些已知问题', font = ('微软雅黑', 12))
+        BETA2_0 = Label(self.log, text = 'BETA2.0: 1、优化代码  2、日志内部"未来的计划"项去除  3、招聘市场更新  4、签到功能更新  5、解决一些已知问题', font = ('微软雅黑', 12))
+        BETA2_1 = Label(self.log, text = 'BETA2.1: 1、优化代码  2、商店增加商品  3、加入背包功能  4、完成自动更新功能', font = ('微软雅黑', 12))
 
         TitleText.pack()
         BETA1_0.pack()
         BETA1_1.pack()
-        BETA1_2.pack()
+        BETA2_0.pack()
+        BETA2_1.pack()
 
         self.log.mainloop()
     
