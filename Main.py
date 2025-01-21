@@ -192,9 +192,9 @@ class Main: # 主程序
         Label(self.sm, text = '这是一个打工赚钱小游戏', font = ('微软雅黑', 10)).pack()
         Label(self.sm, text = '虽然这个游戏没有反作弊 但最好还是别用作弊道具 不然就不好玩了', font = ('微软雅黑', 10)).pack()
         Label(self.sm, text = '')
-        Label(self.sm, text = '如果对本游戏觉得还不错的话, 请给我一个star吧! 真的感谢!').pack()
+        Label(self.sm, text = '如果对本游戏觉得还不错的话, 请给我一个star吧! 真的感谢!', font = ('微软雅黑', 10)).pack()
         Label(self.sm, text = 'https://github.com/meme123b/XPP-Shop', font = ('微软雅黑', 10)).pack()
-        Label(self.sm, text = '如果发现更新错误或者是bug, 请在github上或者在我的邮箱(13705894451@163.com)上告诉我!你的支持是我最大的动力!').pack()
+        Label(self.sm, text = '如果发现更新错误或者是bug, 请在github上或者在我的邮箱(13705894451@163.com)上告诉我!你的支持是我最大的动力!', font = ('微软雅黑', 10)).pack()
         Label(self.sm, text = '制作者——WuBinBang').pack()
 
     def Log(self): # 日志
@@ -237,6 +237,7 @@ class Main: # 主程序
         self.MainInterface()
         self.AllLabelUpdate()
         self.check_sign_in()
+        CheckUpdate()
         self.root.mainloop()
 
 if __name__ == '__main__': # 运行
