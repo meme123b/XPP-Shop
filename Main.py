@@ -154,7 +154,6 @@ class Main: # 主程序
         if M.Work != '无':
             a = messagebox.askquestion('tips', '你已经有工作了!\n想被老板炒鱿鱼啊!', **self.DojOptions)
             if a == 'no':
-                messagebox.showinfo('tips', '算你识相!')
                 return None
             else:
                 messagebox.showinfo('tips', '你被炒鱿鱼了!')
