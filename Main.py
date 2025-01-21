@@ -23,8 +23,8 @@ def SelfCheck(): # 自建系统要求
         sys.exit()
     AP.CheckTheTableOfContents()
     AP.ReadArchives()
-    ReallyVersion = 'v2.1b'
-    M.Version = 'v2.1b'
+    ReallyVersion = 'v2.2b'
+    M.Version = 'v2.2b'
 
 SelfCheck() # 调用自建系统要求方法
 
