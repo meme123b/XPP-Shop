@@ -67,5 +67,5 @@ def SaveArchives():
         f.truncate()
         if(M.Work == '无'):
             M.Work = 'None'
-        f.write(f"{M.UserName}\n{M.Work}\n{M.Money}\n{M.LastSignInDate}")
+        f.write(f"{M.UserName}\n{M.Work}\n{M.Money}\n{M.LastSignInDate}\n{M.Version}")
         f.close()
