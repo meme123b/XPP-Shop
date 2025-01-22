@@ -23,8 +23,8 @@ def SelfCheck(): # 自建系统要求
         sys.exit()
     AP.CheckTheTableOfContents()
     AP.ReadArchives()
-    ReallyVersion = 'v2.2b'
-    M.Version = 'v2.2b'
+    ReallyVersion = 'v2.3b'
+    M.Version = 'v2.3b'
 
 SelfCheck() # 调用自建系统要求方法
 
@@ -60,7 +60,7 @@ class Main: # 主程序
         self.root.after(10, self.AllLabelUpdate)
 
     def MainInterface(self): # 主界面
-        Version = Label(self.root, text = 'Versions: BETA.2.2', font = ('微软雅黑', 11))
+        Version = Label(self.root, text = 'Versions: BETA.2.3', font = ('微软雅黑', 11))
         MoneyLabel = Label(self.root, text = f'你的钱: {M.Money}元', textvariable = self.MoneyVAR, font = ('微软雅黑', 14))
         WorkLabel = Label(self.root, text = f'工作单位: {M.Work}', textvariable = self.WorkVAR, font = ('微软雅黑', 14))
 
@@ -227,6 +227,7 @@ class Main: # 主程序
         BETA2_0 = Label(self.log, text = 'BETA2.0: 1、优化代码  2、日志内部"未来的计划"项去除  3、招聘市场更新  4、签到功能更新  5、解决一些已知问题', font = ('微软雅黑', 12))
         BETA2_1 = Label(self.log, text = 'BETA2.1: 1、优化代码  2、完成自动更新功能', font = ('微软雅黑', 12))
         BETA2_2 = Label(self.log, text = 'BETA2.2: 1、增加打零工内容  2、增加商店内商品数', font = ('微软雅黑', 12))
+        BETA2_3 = Label(self.log, text = 'BETA2.3: 1、改进更新  2、修复已知bug', font = ('微软雅黑', 12))
 
         TitleText.pack()
         BETA1_0.pack()
@@ -234,6 +235,7 @@ class Main: # 主程序
         BETA2_0.pack()
         BETA2_1.pack()
         BETA2_2.pack()
+        BETA2_3.pack()
 
         self.log.mainloop()
     

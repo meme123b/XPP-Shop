@@ -24,8 +24,13 @@ def update_application():
 
         # 下载并解压新版本
         download_and_extract(download_url, extract_to='.')
+
+        # 显示版本详情
+        version_details = latest_release['body']
+        messagebox.showinfo('版本详情', f'下载完成!版本详情:\n{latest_release["tag_name"]}\n\n{version_details}')
         
-        messagebox.showinfo('更新', '更新完成!')
+        messagebox.showinfo('Complete', '已完成!你可以删除此旧版本程序玩新版本了!')
+        os.system('taskkill /f /im python.exe')
 
     except Exception as e:
         messagebox.showerror('错误', f'更新过程中发生错误: {e}')
