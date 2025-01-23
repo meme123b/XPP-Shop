@@ -121,8 +121,9 @@ comapany_dollar = [89,
                    61, 
                    75]
 
-CompanyNumber = []
+EducationalBackground = [511, 442, 618, 795, 780, 595, 447, 343, 247, 317, 317, 676, 405, 314, 956, 125, 883, 165, 793, 759, 924, 214, 835, 687, 730, 106, 447, 603, 546, 849, 706, 593, 847, 127, 708, 394, 717, 237, 449, 621, 487, 535, 518, 272, 746, 412, 225, 151, 165, 473, 355, 756, 398, 946, 660, 314, 761, 832, 537, 487, 165, 386, 785, 259, 724, 379, 888, 204, 241, 898, 734, 906, 247, 309, 818, 436, 130, 378, 874, 315, 777, 891, 620, 486, 184, 476, 417, 340, 678, 429, 122, 896, 124, 981, 950, 525, 435, 579, 980, 442]
 
+CompanyNumber = []
 
 comapany_Dict = dict(zip(company_names, comapany_dollar))
 for i in range(len(company_names)):
@@ -132,3 +133,4 @@ for i in comapany_Dict:
     CompanyNumber.append(i)
 
 Comapany_NUMBER_NAME_DICT = dict(zip(CompanyNumber, company_names))
+EducationalBackgroundDict = dict(zip(company_names, EducationalBackground))

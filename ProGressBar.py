@@ -6,7 +6,7 @@ class ProGressBar:
     def __init__(self, duration):
         self.GOBACKHOME = 'OK'
         self.PB = tk.Tk()
-        self.PB.title('工作')
+        self.PB.title('ProGressBar')
         self.PB.geometry('300x100')
         self.PB.resizable(False, False)
         self.PROGRESSCOMPLETEVAR = tk.StringVar()
@@ -39,9 +39,3 @@ class ProGressBar:
         self.start_progress()
         self.PB.protocol("WM_DELETE_WINDOW", self.on_closing)
         self.PB.mainloop()
-
-if __name__ == '__main__':
-    print(M.Money)
-    pro = ProGressBar(1, '送外卖')
-    pro.Run()
-    print(M.Money)
