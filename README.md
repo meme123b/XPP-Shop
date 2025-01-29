@@ -17,5 +17,5 @@
 
 如果你有任何问题或建议，请通过以下方式联系：
 
-- 邮箱：13705894451@163.com
+- 邮箱：wubinbang1234@163.com
 - GitHub：https://github.com/meme123b/XPP-Shop
