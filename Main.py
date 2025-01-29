@@ -1,36 +1,39 @@
-from tkinter import * # 导入库
-from tkinter import messagebox
-import ArchivalProcessing as AP
-import Model as M
+# 标准库导入
 import sys
 import platform as P
-import time as t
-from Page import *
-import os
-from ProGressBar import ProGressBar
 import threading
 import queue as q
 import random
 from datetime import datetime
+
+# 第三方库导入
+from tkinter import *
+from tkinter import messagebox
+import cProfile
+import pstats
+
+# 自定义模块导入
+import ArchivalProcessing as AP
+import Model as M
+import Page as PG
+from ProGressBar import ProGressBar
 from CheckUpdateProgram import CheckUpdate
 
-messagebox.showwarning('注意', '本游戏内所有公司名均为虚构!\n如有雷同 纯属巧合!')
-
-def SelfCheck(): # 自建系统要求
+def SelfCheck(): # 自检系统
     system_name = P.system()
     if not system_name == 'Windows':
         messagebox.showerror('Oops!', '本程序仅支持Windows系统!\n')
         sys.exit()
     AP.CheckTheTableOfContents()
     AP.ReadArchives()
-    ReallyVersion = 'v3.0b'
-    M.Version = 'v3.0b'
+    ReallyVersion = 'v3.1b'
+    M.Version = 'v3.1b'
 
 SelfCheck() # 调用自建系统要求方法
 
 class Main: # 主程序
     def __init__(self): # 初始化
-        self.PAGE_COMPANY_AND_DOLLAR = comapany_Dict
+        self.PAGE_COMPANY_AND_DOLLAR = PG.comapany_Dict
 
         self.root = Tk()
         self.root.title('XPP生活')
@@ -40,9 +43,8 @@ class Main: # 主程序
         self.MoneyVAR = StringVar()
         self.WorkVAR = StringVar()
         self.EducationalBackgroundVAR = StringVar()
-
-        self.BreadsVAR = StringVar()
-        self.WaterVAR = StringVar()
+        self.HappyVAR = StringVar()
+        self.HungryVAR = StringVar()
 
         self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
 
@@ -50,26 +52,31 @@ class Main: # 主程序
         self.learn_queue = q.Queue()
     
     def on_closing(self): # 关闭窗口时
-        MESSAGE = messagebox.askquestion('提示', '保存并退出？')
-        if MESSAGE == 'yes':
-            AP.SaveArchives()
-            sys.exit()
-        else:
-            MESSAGE2 = messagebox.askquestion('提示', '不保存并退出？')
-            if MESSAGE2 == 'yes':
+        if messagebox.askquestion('提示', '你确定要退出吗？') == 'yes':
+            if messagebox.askquestion('提示', '是否保存？') == 'yes':
+                AP.SaveArchives()
+                self.root.quit()
                 sys.exit()
+            else:
+                self.root.quit()
+                sys.exit()
+        else:
+            pass
     
     def AllLabelUpdate(self): # 更新所有文本标签
         self.MoneyVAR.set(f'你的钱: {M.Money}元')
         self.WorkVAR.set(f'工作单位: {M.Work}')
+        self.HungryVAR.set(f'饱食度: {M.Hungry}')
+        self.HappyVAR.set(f'心情值: {M.Happy}')
         self.EducationalBackgroundVAR.set(f'学历值: {M.Learn}')
-        self.BreadsVAR.set(f'小面包有 {M.Breads} 个')
-        self.WaterVAR.set(f'水娃娃矿泉水有 {M.Water} 瓶')
+
         self.root.after(10, self.AllLabelUpdate)
 
     def MainInterface(self): # 主界面
-        Version = Label(self.root, text = 'Versions: BETA.3.0', font = ('微软雅黑', 11))
+        Version = Label(self.root, text = 'Versions: BETA.3.1', font = ('微软雅黑', 11))
         MoneyLabel = Label(self.root, text = f'你的钱: {M.Money}元', textvariable = self.MoneyVAR, font = ('微软雅黑', 14))
+        HungryLabel = Label(self.root, text = f'饱食度: {M.Hungry}', textvariable = self.HungryVAR, font = ('微软雅黑', 14))
+        HappyLabel = Label(self.root, text = f'心情值: {M.Happy}', textvariable = self.HappyVAR, font = ('微软雅黑', 14))
         EducationalBackgroundLabel = Label(self.root, text = f'学历值:{M.Learn}', textvariable = self.EducationalBackgroundVAR, font = ('微软雅黑', 14))
         WorkLabel = Label(self.root, text = f'工作单位: {M.Work}', textvariable = self.WorkVAR, font = ('微软雅黑', 14))
 
@@ -80,10 +87,13 @@ class Main: # 主程序
         BagButton = Button(self.root, text = '背包', command = self.Bag, font = ('微软雅黑', 14))
         GoToLearnButton = Button(self.root, text = '去学习', command = self.GoToLearn, font = ('微软雅黑', 14))
         SMButton = Button(self.root, text = '说明', command = self.SM, font = ('微软雅黑', 14))
+        HelpButton = Button(self.root, text = '帮助', command = self.Help, font = ('微软雅黑', 14))
         CheckUpdateButton = Button(self.root, text = '检查可用更新', command = CheckUpdate, font = ('微软雅黑', 11))
 
         MoneyLabel.pack() # 钱数
         EducationalBackgroundLabel.pack() # 学历值
+        HungryLabel.pack() # 饱食度
+        HappyLabel.pack() # 心情值
         WorkLabel.pack() # 工作单位
         Version.place(x = 660, y = 570) # 版本号
 
@@ -93,8 +103,20 @@ class Main: # 主程序
         GoToLearnButton.pack() # 去学习
         RecruitmentMarketButton.pack() # 招聘市场
         LogButton.pack() # 日志
+        HelpButton.pack() # 帮助
         SMButton.pack() # 说明
         CheckUpdateButton.place(x = 550, y = 565) # 检查更新
+
+    def Help(self): # 帮助
+        self.help = Tk()
+        self.help.title('帮助')
+        self.help.geometry('600x400')
+        self.help.resizable(False, False)
+        def HelpMainInterFace():
+            messagebox.showinfo('帮助', '主界面内容:\n钱：你的钱数量\n学历值：代表着你的能力 能力越高可以入驻的公司越多\n饱食度：就是吃没吃饱（越高越饱 最高100）\n心情值：开心或伤心（越高越开心 最高100）\n备注：饱食度和心情值会影响你的赚钱效率（只有打零工内）')
+
+        Label(self.help, text = '帮助和机制', font = ('微软雅黑', 15)).pack()
+        Button(self.help, text = '主界面内容', command = HelpMainInterFace, font = ('微软雅黑', 14)).pack()
 
     def Bag(self): # 背包
         BagItemsDict = {
@@ -108,8 +130,38 @@ class Main: # 主程序
         Label(self.bag, text = '--背包--', font = ('微软雅黑', 15)).pack()
         Label(self.bag, text = '由于作者太菜 背包的刷新数量功能没有做\n要刷新得重新打开背包界面awa', font = ('微软雅黑', 15)).pack()
         Label(self.bag, text = '', font = ('微软雅黑', 10)).pack()
-        Label(self.bag, text = f'小面包有 {BagItemsDict["小面包"]} 个', textvariable = self.BreadsVAR, font = ('微软雅黑', 14)).pack()
-        Label(self.bag, text = f'水娃娃矿泉水有 {BagItemsDict["水娃娃矿泉水"]} 瓶', textvariable = self.WaterVAR, font = ('微软雅黑', 14)).pack()
+        Label(self.bag, text = f'小面包有 {BagItemsDict["小面包"]} 个', font = ('微软雅黑', 14)).pack()
+        Button(self.bag, text = '食用一个小面包', command = lambda : self.Eat('小面包'), font = ('微软雅黑', 14)).pack()
+        Label(self.bag, text = f'水娃娃矿泉水有 {BagItemsDict["水娃娃矿泉水"]} 瓶', font = ('微软雅黑', 14)).pack()
+        Button(self.bag, text = '喝一瓶水娃娃矿泉水', command = lambda : self.Eat('水娃娃矿泉水'), font = ('微软雅黑', 14)).pack()
+    
+    def Eat(self, food):
+        if food == '小面包':
+            if M.Breads > 0:
+                if messagebox.askquestion('恰饭', f'你确定要吃一个{food}吗?') == 'yes':
+                    if M.Hungry == 100:
+                        messagebox.showinfo('提示', '你现在已经吃的非常饱了!\n不需要再次恰饭!')
+                        return None
+                    elif M.Hungry + 3 > 100:
+                        M.Hungry = 100
+                    else:
+                        M.Hungry += 3
+            else:
+                messagebox.showinfo('提示', f'Bro没有{food}!快去购买吧!')
+                return None
+        elif food == '水娃娃矿泉水':
+            if M.Water > 0:
+                if messagebox.askquestion('恰饭', f'你确定要喝一瓶{food}吗?') == 'yes':
+                    if M.Hungry == 100:
+                        messagebox.showinfo('提示', '你现在已经吃的非常饱了!\n不需要再次喝水!')
+                        return None
+                    elif M.Hungry + 3 > 100:
+                        M.Hungry = 100
+                    else:
+                        M.Hungry += 3
+            else:
+                messagebox.showinfo('提示', f'Bro没有{food}!快去购买吧!')
+                return None
 
     def AddOfLearn(self, learn): # 学习处理
         def learn_thread():
@@ -140,7 +192,7 @@ class Main: # 主程序
 
         threading.Thread(target = learn_thread).start()
 
-    def GoToLearn(self):
+    def GoToLearn(self): # 去学习
         self.learn = Tk()
         self.learn.title('学习')
         self.learn.geometry('600x400')
@@ -157,6 +209,17 @@ class Main: # 主程序
         self.JOB.geometry('600x400')
         self.JOB.resizable(False, False)
         
+        if M.Hungry == 100:
+            Label(self.JOB, text = '你现在吃饱了!工作赚的钱*1.2!\n', font = ('微软雅黑', 14)).pack()
+        elif M.Happy > 80:
+            Label(self.JOB, text = '你现在很开心!工作赚的钱*1.2!\n', font = ('微软雅黑', 14)).pack()
+        elif M.Hungry < 50:
+            Label(self.JOB, text = '你现在饿了!工作挣的钱*0.8!\n', font = ('微软雅黑', 14)).pack()
+        elif M.Happy < 50:
+            Label(self.JOB, text = '你现在心情不好!工作挣的钱*0.8!\n', font = ('微软雅黑', 14)).pack()
+        else:
+            Label(self.JOB, text = '你现在感觉一般般!工作挣的钱不变!\n', font = ('微软雅黑', 14)).pack()
+
         Label(self.JOB, text = '选择一个工作', font = ('微软雅黑', 14)).pack()
         Button(self.JOB, text = '送外卖(10元/8秒)', command = lambda : self.AddOfOddJob('送外卖'), font = ('微软雅黑', 14)).pack()
         Button(self.JOB, text = '快递驿站分拣(20元/16秒)', command = lambda : self.AddOfOddJob('快递驿站分拣'), font = ('微软雅黑', 14)).pack()
@@ -176,11 +239,24 @@ class Main: # 主程序
             duration = job_Seconds.get(job, 8)  # 默认为8秒，如果没有找到对应的工作类型
             ProGress = ProGressBar(duration)
             ProGress.Run()
-            if job == '送外卖': M.Money += 10
-            elif job == '快递驿站分拣': M.Money += 20
-            elif job == '送快递': M.Money += 30
-            elif job == '去XX奶茶店打工': M.Money += 30
-            elif job == '做网站审核员': M.Money += 10
+            if (M.Hungry < 100 and M.Hungry > 50) or (M.Happy < 80 and M.Happy > 50):
+                if job == '送外卖': M.Money += 10
+                elif job == '快递驿站分拣': M.Money += 20
+                elif job == '送快递': M.Money += 30
+                elif job == '去XX奶茶店打工': M.Money += 30
+                elif job == '做网站审核员': M.Money += 10
+            elif M.Hungry == 100 or M.Happy > 80:
+                if job == '送外卖': M.Money += int(10 * 1.2)
+                elif job == '快递驿站分拣': M.Money += int(20 * 1.2)
+                elif job == '送快递': M.Money += int(30 * 1.2)
+                elif job == '去XX奶茶店打工': M.Money += int(30 * 1.2)
+                elif job == '做网站审核员': M.Money += int(10 * 1.2)
+            else:
+                if job == '送外卖': M.Money += int(10 * 0.8)
+                elif job == '快递驿站分拣': M.Money += int(20 * 0.8)
+                elif job == '送快递': M.Money += int(30 * 0.8)
+                elif job == '去XX奶茶店打工': M.Money += int(30 * 0.8)
+                elif job == '做网站审核员': M.Money += int(10 * 0.8)
             self.job_queue.put('job_done')
 
         threading.Thread(target=job_thread).start()
@@ -220,6 +296,7 @@ class Main: # 主程序
 
         Label(self.Market, text = '食品', font = ('微软雅黑', 20)).place(x = 63, y = 15)
 
+        #小面包提供饱食度3
         Label(self.Market, text = '小面包', font = ('微软雅黑', 13)).place(x = 66, y = 70)
         BuyBreadbutton = Button(self.Market, text = '购买小面包(2元/个)', command = lambda: self.BuyItem('小面包', BuyBreadentry))
         BuyBreadlabel = Label(self.Market, text = '买多少个?')
@@ -228,6 +305,7 @@ class Main: # 主程序
         BuyBreadlabel.place(x = 67, y = 130)
         BuyBreadentry.place(x = 33, y = 150)
 
+        #水娃娃矿泉水提供饱食度3
         Label(self.Market, text = '水娃娃矿泉水', font = ('微软雅黑', 13)).place(x = 50, y = 200)
         BuyWaterbutton = Button(self.Market, text = '购买水娃娃矿泉水(2元/瓶)', command = lambda: self.BuyItem('水娃娃矿泉水', BuyWaterentry))
         BuyWaterlabel = Label(self.Market, text = '买多少瓶?')
@@ -257,7 +335,7 @@ class Main: # 主程序
         # 将字典项转换为列表，然后随机选择几个公司
         selected_companies = random.sample(list(self.PAGE_COMPANY_AND_DOLLAR.items()), 5)  # 随机选择5家公司
         for i, (company, salary) in enumerate(selected_companies, start=1):
-            button_text = f'{company}:{salary}元/现实一天\n要求学历:{EducationalBackgroundDict[company]}'
+            button_text = f'{company}:{salary}元/现实一天\n要求学历:{PG.EducationalBackgroundDict[company]}'
             Button(self.RM, text=button_text, command=lambda c=company, s=salary : self.JoinCompany(c, s)).pack()
 
     def JoinCompany(self, company, salary): # 加入公司
@@ -266,7 +344,7 @@ class Main: # 主程序
             if company not in self.PAGE_COMPANY_AND_DOLLAR:
                 messagebox.showinfo('Tips', '这个公司不存在')
             else:
-                if M.Learn >= EducationalBackgroundDict[company]:
+                if M.Learn >= PG.EducationalBackgroundDict[company]:
                     messagebox.showinfo('Tips', f'你加入了{company}! 你将会每现实一天就会获得{salary}元!')
                     M.Work = company
                     M.LastSignInDate = datetime.now().date()
@@ -286,7 +364,7 @@ class Main: # 主程序
         Label(self.sm, text = '')
         Label(self.sm, text = '如果对本游戏觉得还不错的话, 请给我一个star吧! 真的感谢!', font = ('微软雅黑', 10)).pack()
         Label(self.sm, text = 'https://github.com/meme123b/XPP-Shop', font = ('微软雅黑', 10)).pack()
-        Label(self.sm, text = '如果发现更新错误或者是bug, 请在github上或者在我的邮箱(13705894451@163.com)上告诉我!你的支持是我最大的动力!', font = ('微软雅黑', 10)).pack()
+        Label(self.sm, text = '如果发现更新错误或者是bug, 请在github上或者在我的邮箱(wubinbang1234@163.com)上告诉我!你的支持是我最大的动力!', font = ('微软雅黑', 10)).pack()
         Label(self.sm, text = '制作者——WuBinBang').pack()
 
     def Log(self): # 日志
@@ -299,11 +377,12 @@ class Main: # 主程序
         
         BETA1_0 = Label(self.log, text = 'BETA1.0: 基本框架完成 开始制作游戏玩法', font = ('微软雅黑', 12))
         BETA1_1 = Label(self.log, text = 'BETA1.1: 打零工更新 加入"说明"按钮', font = ('微软雅黑', 12))
-        BETA2_0 = Label(self.log, text = 'BETA2.0: 1、优化代码  2、日志内部"未来的计划"项去除  3、招聘市场更新  4、签到功能更新  5、解决一些已知问题', font = ('微软雅黑', 12))
+        BETA2_0 = Label(self.log, text = 'BETA2.0: 1、优化代码  2、日志内部"未来的计划"项去除  3、招聘市场更新  4、签到功能更新  5、解决一些已知问题  6、存档编码更新', font = ('微软雅黑', 12))
         BETA2_1 = Label(self.log, text = 'BETA2.1: 1、优化代码  2、完成自动更新功能', font = ('微软雅黑', 12))
         BETA2_2 = Label(self.log, text = 'BETA2.2: 1、增加打零工内容  2、增加商店内商品数', font = ('微软雅黑', 12))
         BETA2_3 = Label(self.log, text = 'BETA2.3: 1、改进更新  2、修复已知bug', font = ('微软雅黑', 12))
         BETA3_0 = Label(self.log, text = 'BETA3.0: 1、加入学历及相关内容  2、进入公司条件更新  3、更新模块大体完成  4、背包更新  5、读取存档大改进', font = ('微软雅黑', 12))
+        BETA3_1 = Label(self.log, text = 'BETA3.1: 1、改进背包  2、加入饱食度  3、加入心情值  4、加入帮助  5、打零工特性  6、关闭时的提示更改  7、修复了遗留的bug', font = ('微软雅黑', 12))
         WarningText = Label(self.log, text = '\n注:从2.0版本开始 写入文件编码为UTF-8 而之前的是GBK所以旧版本已经扫不了存档了\n如果使用旧版本exe(BETA1.0~BETA1.1)打开会出错\n而且如果是新版本存档然后又打开了旧版本exe(BETA1.0~BETA1.1)的 是会导致部分数据丢失!', font = ('微软雅黑', 15))
 
         TitleText.pack()
@@ -314,6 +393,7 @@ class Main: # 主程序
         BETA2_2.pack()
         BETA2_3.pack()
         BETA3_0.pack()
+        BETA3_1.pack()
         WarningText.pack()
 
         self.log.mainloop()
@@ -335,10 +415,10 @@ class Main: # 主程序
 
     def Run(self): # 运行函数
         self.MainInterface()
-        self.AllLabelUpdate()
-        self.check_sign_in()
+        threading.Thread(target = self.AllLabelUpdate).start()
+        threading.Thread(target = self.check_sign_in).start()
         threading.Thread(target = CheckUpdate).start()
         self.root.mainloop()
 
 if __name__ == '__main__': # 运行
-    Main().Run()
+    cProfile.run('Main().Run()')

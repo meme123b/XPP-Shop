@@ -39,6 +39,7 @@ def Draw_Text(Text = '', SleepTime = 0, endl = False) -> None:
        print()
 
 def ReadArchives():
+    messagebox.showwarning('注意', '本游戏内所有公司名均为虚构!\n如有雷同 纯属巧合!')
     global path
     List = []
     with open(path, 'r', encoding='utf-8') as f:
@@ -47,7 +48,7 @@ def ReadArchives():
         f.close()
 
     # 读取用户名
-    M.UserName = List[0] if len(List) > 0 else '默认用户名'
+    M.UserName = List[0] if len(List) > 0 else 'Administrator'
 
     # 读取工作
     M.Work = List[1] if len(List) > 1 else '无'
@@ -61,16 +62,22 @@ def ReadArchives():
     M.LastSignInDate = List[3] if len(List) > 3 else datetime.now().date()
 
     # 读取版本
-    M.Version = List[4] if len(List) > 4 else 'v3.0b'
+    M.Version = List[4] if len(List) > 4 else 'v3.1b'
 
-    # 读取学习时间
-    M.Learn = int(List[5]) if len(List) > 5 else 0
+    # 读取心情值
+    M.Happy = int(List[5]) if len(List) > 5 else 100
+
+    # 读取饱食度
+    M.Hungry = int(List[6]) if len(List) > 6 else 100
+
+    # 读取学历
+    M.Learn = int(List[7]) if len(List) > 7 else 0
 
     # 读取面包数量
-    M.Breads = int(List[6]) if len(List) > 6 else 0
+    M.Breads = int(List[8]) if len(List) > 8 else 0
 
     # 读取水数量
-    M.Water = int(List[7]) if len(List) > 7 else 0
+    M.Water = int(List[9]) if len(List) > 9 else 0
 
     messagebox.showinfo('提示', f'存档加载完成!\n\n欢迎回来!{M.UserName}')
     return List
@@ -81,5 +88,5 @@ def SaveArchives():
         f.truncate()
         if(M.Work == '无'):
             M.Work = 'None'
-        f.write(f"{M.UserName}\n{M.Work}\n{M.Money}\n{M.LastSignInDate}\n{M.Version}\n{M.Learn}\n{M.Breads}\n{M.Water}")
+        f.write(f"{M.UserName}\n{M.Work}\n{M.Money}\n{M.LastSignInDate}\n{M.Version}\n{M.Happy}\n{M.Hungry}\n{M.Learn}\n{M.Breads}\n{M.Water}")
         f.close()
