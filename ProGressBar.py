@@ -16,7 +16,7 @@ class ProGressBar:
         self.progressbar = ttk.Progressbar(self.PB, orient='horizontal', length=200, mode='determinate')
         self.progressbar.pack(pady=20)
         self.duration = duration
-
+ 
     def start_progress(self):
         self.progressbar['value'] = 0
         self.update_progress(0)
