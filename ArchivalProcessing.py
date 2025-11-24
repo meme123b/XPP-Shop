@@ -4,7 +4,6 @@ import Model as M
 from time import sleep
 from tkinter import *
 from tkinter import messagebox
-import subprocess as s
 from datetime import datetime
 
 Windows_user_name = os.getlogin()
